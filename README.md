@@ -1,0 +1,1 @@
+"# Rails Next.js Portfolio" 
