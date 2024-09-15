@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   get 'scrape', to: 'scraper#scrape'
+  # /urasande アクションのルーティング
+  get 'urasande', to: 'scraper#urasande'
 end

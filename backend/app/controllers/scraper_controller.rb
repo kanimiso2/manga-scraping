@@ -66,5 +66,43 @@ class ScraperController < ApplicationController
       render json: { error: e.message }, status: :internal_server_error
     end
   end
+
+   # GET /urasande
+def urasande
+    base_url = 'https://urasunday.com/' # ベースのURL
+    url = base_url # スクレイピング対象のURL
+    begin
+      html = URI.open(url)
+      doc = Nokogiri::HTML(html)
+  
+      # "NEW"のアイテムを含むリストアイテムを抽出
+      manga_items = doc.css('ul.title-banner li').map do |item|
+        if item.at_css('span') && item.at_css('span').text.strip == 'NEW'
+          item_url = item.at_css('a')[:href]
+          full_url = URI.join(base_url, item_url).to_s # フルURLに変換
+          {
+            title: item.at_css('div')&.text&.strip,
+            url: full_url
+          }
+        end
+      end.compact # nil値を除去
+  
+      if manga_items.any?
+        # ログにアイテム情報を出力
+        logger.info("Found new manga items: #{manga_items.inspect}")
+  
+        # JSON形式で返す
+        render json: { manga_items: manga_items }, status: :ok
+      else
+        # "NEW"アイテムが見つからなかった場合
+        logger.warn("No new items found.")
+        render json: { error: "No new items found" }, status: :not_found
+      end
+    rescue StandardError => e
+      # エラーログを出力
+      logger.error("Scraping failed: #{e.message}")
+      render json: { error: e.message }, status: :internal_server_error
+    end
+  end
 end
 
