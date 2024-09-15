@@ -1,0 +1,69 @@
+openapi: 3.0.3
+servers:
+  - url:  https://api.example.com/{version}
+    description: Produce servers
+    variables:
+      version:
+        description: API version
+        default: v1
+  - url:  http://localhost:3000
+    description: Develop servers
+    variables:
+      version:
+        description: API version
+        default: v1
+  - url: http://localhost:4010
+    description: Local mock server
+info:
+  title: ScraipingAppAPi
+  version: 1.0.0
+paths:
+  /commics:
+    get: 
+      tags:
+        - 漫画
+      summary: 漫画一覧取得
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Commic'
+        "500":
+          description: サーバーエラー
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+components:
+  schemas:
+    Commic:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Example Manga Title"
+        image:
+          type: string
+          example: "https://example.com/image.jpg"
+        url:
+          type: string
+          example: "https://example.com/manga/1"
+        from_scraping:
+          type: string
+          example: "mangareader.net"
+        scraping_date:
+          type: string
+          format: date-time
+          example: "2024-09-13T12:00:00Z"
