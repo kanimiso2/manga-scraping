@@ -17,20 +17,20 @@ class ScraperController < ApplicationController
                     when 0
                         '.daily-series-wrapper.sunday.firstday.js-firstday'
                     when 1
-                        '.daily-series-wrapper.sunday.firstday.js-firstday'
+                        '.daily-series-wrapper.monday.firstday.js-firstday'
                     when 2
-                        '.daily-series-wrapper.sunday.firstday.js-firstday'
+                        '.daily-series-wrapper.tuesday.firstday.js-firstday'
                     when 3
-                        '.daily-series-wrapper.sunday.firstday.js-firstday'
+                        '.daily-series-wrapper.wednesday.firstday.js-firstday'
                     when 4
-                        '.daily-series-wrapper.sunday.firstday.js-firstday'
+                        '.daily-series-wrapper.thursday.firstday.js-firstday'
                     when 5
-                        '.daily-series-wrapper.sunday.firstday.js-firstday'
+                        '.daily-series-wrapper.friday.firstday.js-firstday'
                     when 6
                         '.daily-series-wrapper.saturday.hidden.js-hidden-day'
-                   else
+                    else
                         nil
-                   end
+                    end
 
       if class_name
         # 特定のクラス名を持つ要素を取得
@@ -104,5 +104,54 @@ def urasande
       render json: { error: e.message }, status: :internal_server_error
     end
   end
+ 
+
+def shonenjumpplus
+    base_url = 'https://shonenjumpplus.com/' # ベースのURL
+    url = base_url # スクレイピング対象のURL
+  
+    begin
+      # HTMLデータを取得
+      html = URI.open(url)
+      doc = Nokogiri::HTML(html)
+  
+      # 最初のdaily-seriesアイテムを取得
+      daily_series = doc.at_css('ul.daily-series')
+  
+      if daily_series
+        # 最初のdaily-seriesの中からまんがのタイトルとURLを抽出
+        manga_items = daily_series.css('li.daily-series-item').map do |item|
+          title = item.at_css('h2.daily-series-title')&.text&.strip # タイトル
+          item_url = item.at_css('a')[:href] # 相対URL
+          # URLは相対URLのまま使用
+          {
+            title: title,
+            url: item_url
+          } if title && item_url # タイトルとURLが存在する場合のみ追加
+        end.compact # nil値を除去
+  
+        if manga_items.any?
+          # ログにアイテム情報を出力
+          logger.info("Found manga items: #{manga_items.inspect}")
+  
+          # JSON形式で返す
+          render json: { manga_items: manga_items }, status: :ok
+        else
+          # アイテムが見つからなかった場合
+          logger.warn("No manga items found.")
+          render json: { error: "No manga items found" }, status: :not_found
+        end
+      else
+        # daily-seriesが見つからなかった場合
+        logger.warn("No daily series found.")
+        render json: { error: "No daily series found" }, status: :not_found
+      end
+    rescue StandardError => e
+      # エラーハンドリング
+      logger.error("Scraping failed: #{e.message}")
+      render json: { error: e.message }, status: :internal_server_error
+    end
+  end
+  
 end
 

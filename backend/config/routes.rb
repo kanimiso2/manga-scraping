@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   get 'scrape', to: 'scraper#scrape'
   # /urasande アクションのルーティング
   get 'urasande', to: 'scraper#urasande'
+
+  get "shonenjumpplus",to: "scraper#shonenjumpplus"
 end
