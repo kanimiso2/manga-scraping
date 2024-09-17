@@ -47,7 +47,19 @@ class ScraperController < ApplicationController
 
           # ログに情報を出力
           logger.info("Manga Items: #{manga_items.inspect}")
-
+          # スクレイピング結果を Comic モデルに保存
+            manga_items.each do |manga|
+                # URLの重複チェック
+                unless Comic.exists?(url: manga[:url])
+                    Comic.create(
+                        title: manga[:title],
+                        url: manga[:url],
+                        from_scraping: 'Magazine Pocket', # 出典元を追加
+                        scraping_date: Time.current
+                    )
+                end
+            end 
+            
           # JSON形式で返す
           render json: { manga_items: manga_items }, status: :ok
         else
@@ -90,7 +102,19 @@ def urasande
       if manga_items.any?
         # ログにアイテム情報を出力
         logger.info("Found new manga items: #{manga_items.inspect}")
-  
+
+        # スクレイピング結果を `Comic` モデルに保存
+        manga_items.each do |manga|
+            # 重複チェック（既に存在するか確認）
+            unless Comic.exists?(url: manga[:url])
+            Comic.create(
+                title: manga[:title],
+                url: manga[:url],
+                from_scraping: 'Ura Sunday', # 出典元を追加
+                scraping_date: Time.current
+            )
+            end
+        end
         # JSON形式で返す
         render json: { manga_items: manga_items }, status: :ok
       else
@@ -131,9 +155,22 @@ def shonenjumpplus
         end.compact # nil値を除去
   
         if manga_items.any?
-          # ログにアイテム情報を出力
-          logger.info("Found manga items: #{manga_items.inspect}")
-  
+            # ログにアイテム情報を出力
+            logger.info("Found manga items: #{manga_items.inspect}")
+
+            # スクレイピング結果を `Comic` モデルに保存
+            manga_items.each do |manga|
+                # 重複チェック（既に存在するか確認）
+                unless Comic.exists?(url: manga[:url])
+                    Comic.create(
+                        title: manga[:title],
+                        url: manga[:url],
+                        from_scraping: 'Shonen Jump Plus', # 出典元を追加
+                        scraping_date: Time.current
+                    )
+                end
+            end
+
           # JSON形式で返す
           render json: { manga_items: manga_items }, status: :ok
         else

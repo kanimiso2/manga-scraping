@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_12_080448) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_16_132746) do
+  create_table "comics", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "from_scraping"
+    t.string "image"
+    t.string "url", null: false
+    t.datetime "scraping_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_comics_on_title"
+    t.index ["url"], name: "index_comics_on_url", unique: true
+  end
+
   create_table "posts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
