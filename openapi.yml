@@ -1,39 +1,136 @@
 openapi: 3.0.3
 servers:
-  - url:  https://api.example.com/{version}
-    description: Produce servers
+  - url: https://api.example.com/api/{version}
+    description: Production server
     variables:
       version:
         description: API version
         default: v1
-  - url:  http://localhost:3000
-    description: Develop servers
+  - url: http://localhost:3000/api/{version}
+    description: Development server
     variables:
       version:
         description: API version
         default: v1
-  - url: http://localhost:4010
-    description: Local mock server
+
 info:
-  title: ScraipingAppAPi
+  title: ScrapingAppAPI
   version: 1.0.0
+  description: API for managing manga data and performing web scraping.
+
 paths:
-  /commics:
-    get: 
+  /comics:
+    get:
       tags:
-        - 漫画
-      summary: 漫画一覧取得
+        - Manga
+      summary: Manga一覧を取得するエンドポイント
+      description: 全てのMangaデータを取得します。データベースに保存されているスクレイピングされたMangaのリストを返します。
       responses:
         "200":
-          description: 成功
+          description: Mangaデータの取得に成功しました
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Commic'
+                  $ref: '#/components/schemas/Comic'
         "500":
-          description: サーバーエラー
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+  /comics/{id}:
+    get:
+      tags:
+        - Manga
+      summary: 特定のMangaデータを取得するエンドポイント
+      description: IDを指定して、該当するMangaデータを取得します。データが存在しない場合は404エラーを返します。
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 取得するMangaのID
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Mangaデータの取得に成功しました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comic'
+        "404":
+          description: 該当するMangaが見つかりませんでした
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Comic not found"
+        "500":
+          description: サーバーエラーが発生しました
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Internal Server Error"
+
+  /comics/search_by_from_scraping:
+    get:
+      tags:
+        - Manga
+      summary: 指定したスクレイピング元のMangaを検索するエンドポイント
+      description: スクレイピング元の名前を指定して、該当するMangaデータを取得します。
+      parameters:
+        - name: from_scraping
+          in: query
+          required: true
+          description: Mangaがスクレイピングされた元のサイト名 
+          schema:
+            type: string
+            example: "Ura Sunday"
+      responses:
+        "200":
+          description: 指定されたスクレイピング元からのMangaデータの取得に成功しました
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comic'
+        "400":
+          description: from_scrapingパラメータが欠落しているか無効です
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "from_scraping parameter is missing"
+        "404":
+          description: 指定されたスクレイピング元のMangaデータが見つかりませんでした
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No comics found"
+        "500":
+          description: サーバーエラーが発生しました
           content:
             application/json:
               schema:
@@ -45,7 +142,7 @@ paths:
 
 components:
   schemas:
-    Commic:
+    Comic:
       type: object
       properties:
         id:
