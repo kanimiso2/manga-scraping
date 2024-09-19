@@ -4,7 +4,6 @@ import Header from './Header';
 import Footer from './Footer';
 import Appbar from "./appbar";
 
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -23,16 +22,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+    
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
-        <Appbar />
+        {/* <SessionProvider> */}
+        {/* <Appbar /> */}
         <Header /> 
         <main className="flex-1 bg-sky-50">
+        
           {children}
+        
         </main>
         <Footer /> 
+        {/* </SessionProvider> */}
       </body>
     </html>
   );

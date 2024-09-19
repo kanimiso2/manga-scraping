@@ -25,3 +25,8 @@ body {
     text-wrap: balance;
   }
 }
+
+
+/* slick-carouselのスタイル */
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
