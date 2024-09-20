@@ -1,51 +1,15 @@
-// // app/feed-list/page.js
-// import React from 'react';
-// import Card from '../../../components/Card'; // カードコンポーネントのインポート
-
-// const FeedList = async () => {
-//   let articles = [];
-//   try {
-//     const response = await fetch('http://backend:3000/api/v1/feedsdb?source=LineYahoo');
-//     if (!response.ok) {
-//       throw new Error('Failed to fetch');
-//     }
-//     const data = await response.json();
-//     articles = data.articles;
-//   } catch (error) {
-//     console.error('Error fetching articles:', error);
-//   }
-
-//   return (
-//     <div className="container mx-auto p-4">
-//       <h1 className="text-4xl font-bold mb-6">Line Yahoo</h1>
-//       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-//         {articles.map((article, index) => (
-//           <Card
-//             key={index}
-//             title={article.title}
-//             imageUrl={article.image}
-//             url={article.url}
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default FeedList;
-
 "use client"
 import React, { useEffect, useState } from 'react';
 import Card from '../../../components/Card';
 
-const FeedList = () => {
+export default function FeedList ({ params }: { params: { source: string } }) {
   const [articles, setArticles] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   const fetchArticles = async (pageNumber) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/pagenate?source=LineYahoo&page=${pageNumber}`);
+      const response = await fetch(`http://localhost:3000/api/v1/pagenate?source=${params.source}&page=${pageNumber}`);
       if (!response.ok) {
         throw new Error('Failed to fetch');
       }
@@ -68,7 +32,7 @@ const FeedList = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-4xl font-bold mb-6">Line Yahoo</h1>
+      <h1 className="text-4xl font-bold mb-6">{params.source}</h1>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {articles.map((article, index) => (
           <Card
@@ -99,5 +63,3 @@ const FeedList = () => {
     </div>
   );
 };
-
-export default FeedList;
