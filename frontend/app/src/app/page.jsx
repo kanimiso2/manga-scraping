@@ -58,6 +58,7 @@ export default async function Page() {
         sectionTitle="一休.com" // セクションタイトルを渡す
         moreLink = "http://localhost:8000/Article/ikyu"
       />
+      <h1 className="text-center text-xl font-bold mt-10  mb-4">企業名から探す</h1>
       <div className="mt-8 flex justify-center space-x-6">
         <CompanyIcon company="LineYahoo" url="http://localhost:8000/Article/LineYahoo"/>
         <CompanyIcon company="Dena" url="http://localhost:8000/Article/Dena"/>
