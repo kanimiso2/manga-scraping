@@ -1,96 +1,67 @@
 import React from 'react';
-import Card from "../components/Card";
-import Slider from "../components/Slider";
-import Link from 'next/link';
+import Feed from "../components/Feed";
+import CompanyIcon from "../components/CompanyIcon";
+import Slick from "../components/slick"
 
-const images = [
-  "/1.jpg",
-  "/2.jpg",
-  "/3.jpg",
-  "/4.jpg",
-  "/5.jpg",
-  "/6.jpg",
-];
+const baseUrl = 'http://backend:3000/api/v1';
 
-async function fetchComics() {
-  const response = await fetch('http://backend:3000/api/v1/comics');
+async function fetchFeeds(endpoint, limit) {
+  const url = `${baseUrl}${endpoint}?limit=${limit}`;
+  const response = await fetch(url);
+  
   if (!response.ok) {
-    throw new Error('Failed to fetch comics');
+    throw new Error('Failed to fetch feeds');
   }
+  
   return response.json();
 }
 
-async function fetchComicsby(from_scraping) {
-  const response = await fetch(`http://backend:3000/api/v1/comics/search_by_from_scraping?from_scraping=${from_scraping}&limit=6`);
+
+async function fetchdbFeeds(source, limit = 8) {
+  const url = `http://backend:3000/api/v1/feedsdb?source=${source}&limit=${limit}`;
+  const response = await fetch(url);
+
   if (!response.ok) {
-    throw new Error('Failed to fetch comics by from_scraping');
+    throw new Error('Failed to fetch feeds');
   }
+
   return response.json();
 }
+
 
 export default async function Page() {
-  // 全コミックの取得
-  const comics = await fetchComics();
+  const ZennTrendfeeds = await fetchFeeds('/feeds',8);
+  const LineYahoofeeds = await fetchdbFeeds('LineYahoo');
+  const Denafeeds = await fetchdbFeeds('Dena');
+  const ikyufeeds = await fetchdbFeeds('ikyu');
 
-  // from_scraping="magapoke" のコミックを6つだけ取得
-  const magapokeComics = await fetchComicsby('Magazine Pocket');
-  const JumpComics = await fetchComicsby('Shonen Jump Plus');
-  const SundayComics = await fetchComicsby('Ura Sunday');
   return (
     <div className="container mx-auto p-8">
-      <Slider images={images} />
-      {/* <Slider /> */}
-
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Magapoke</h1>
-        <Link href="/magapoke" className="text-blue-500 hover:underline">
-    もっと見る &gt;
-  </Link>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-        {magapokeComics.map((comic) => (
-          <Card
-            key={comic.id}
-            title={comic.title}
-            imageUrl={comic.image} // 画像URLがあるかをチェック
-            url={comic.url} // 詳細ページへのURL
-          />
-        ))}
-      </div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">JumpComics</h1>
-        <Link href="/Jump" className="text-blue-500 hover:underline">
-    もっと見る &gt;
-  </Link>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-        {JumpComics.map((comic) => (
-          <Card
-            key={comic.id}
-            title={comic.title}
-            imageUrl={comic.image} // 画像URLがあるかをチェック
-            url={comic.url} // 詳細ページへのURL
-          />
-        ))}
-      </div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">SUndayComics</h1>
-        <Link href="/Sunday" className="text-blue-500 hover:underline">
-    もっと見る &gt;
-  </Link>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-        {SundayComics.map((comic) => (
-          <Card
-            key={comic.id}
-            title={comic.title}
-            imageUrl={comic.image} // 画像URLがあるかをチェック
-            url={comic.url} // 詳細ページへのURL
-          />
-        ))}
+      <Slick />
+      <Feed 
+        feeds={ZennTrendfeeds}
+        sectionTitle="Trend 🔥" // セクションタイトルを渡す
+        moreLink= "http://localhost:8000/trend"
+      />
+      <Feed 
+        feeds={LineYahoofeeds}
+        sectionTitle="Line Yahoo" // セクションタイトルを渡す
+        moreLink = "http://localhost:8000/Article/LineYahoo"
+      />
+      <Feed 
+        feeds={Denafeeds}
+        sectionTitle="Dena" // セクションタイトルを渡す
+        moreLink = "http://localhost:8000/Article/Dena"
+      />
+      <Feed 
+        feeds={ikyufeeds}
+        sectionTitle="一休.com" // セクションタイトルを渡す
+        moreLink = "http://localhost:8000/Article/ikyu"
+      />
+      <div className="mt-8 flex justify-center space-x-6">
+        <CompanyIcon company="LineYahoo" url="http://localhost:8000/Article/LineYahoo"/>
+        <CompanyIcon company="Dena" url="http://localhost:8000/Article/Dena"/>
+        <CompanyIcon company="Ikyu" url="http://localhost:8000/Article/ikyu"/>
       </div>
     </div>
   );

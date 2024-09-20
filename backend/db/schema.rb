@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_17_084215) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_19_141301) do
   create_table "accounts", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "type", null: false
+    t.string "account_type", null: false
     t.string "provider", null: false
-    t.string "provider_account_id", null: false
+    t.string "provider_account_id"
     t.string "refresh_token"
     t.string "access_token"
     t.datetime "expires_at"
@@ -27,6 +27,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_17_084215) do
     t.datetime "updated_at", null: false
     t.index ["provider", "provider_account_id"], name: "index_accounts_on_provider_and_provider_account_id", unique: true
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "articles", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "title"
+    t.string "url"
+    t.text "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "source"
+    t.datetime "scraping_date"
   end
 
   create_table "comics", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

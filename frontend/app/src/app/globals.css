@@ -27,6 +27,12 @@ body {
 }
 
 
-/* slick-carouselのスタイル */
-@import "~slick-carousel/slick/slick.css";
-@import "~slick-carousel/slick/slick-theme.css";
+
+.slick-prev::before, .slick-next::before {
+  color: rgb(0, 132, 255) !important; /* 矢印アイコンの色を白に設定 */
+  font-size: 24px !important; /* 矢印アイコンのサイズを設定 */
+}
+
+.slick-prev:hover, .slick-next:hover {
+  color: rgb(0, 50, 255) !important; /* ホバー時の背景色を少し暗くする */
+}
