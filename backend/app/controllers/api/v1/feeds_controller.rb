@@ -129,6 +129,47 @@ def yahoo
   end
 
 
+
+
+  # pagenate
+def pagenate
+  if params[:source].present?
+    # ページ数を取得（デフォルトは1）
+    page = params[:page].to_i > 0 ? params[:page].to_i : 1
+
+    articles = Article.where(source: params[:source])
+
+    # ページネーションを適用（per_pageを24に固定）
+    paginated_articles = articles.page(page).per(24)
+
+    if paginated_articles.any?
+      response_data = paginated_articles.map do |article|
+        {
+          title: article.title,
+          url: article.url,
+          image: article.image
+        }
+      end
+
+      # ページ情報を含めて返す
+      render json: {
+        articles: response_data,
+        total_pages: paginated_articles.total_pages,
+        current_page: paginated_articles.current_page,
+        per_page: paginated_articles.limit_value
+      }, status: :ok
+    else
+      render json: { error: 'No articles found' }, status: :not_found
+    end
+  else
+    render json: { error: 'source parameter is missing' }, status: :bad_request
+  end
+rescue StandardError => e
+  render json: { error: "Internal Server Error: #{e.message}" }, status: :internal_server_error
+end
+
+
+
   private
 
   def fetch_image_from_meta(url)

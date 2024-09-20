@@ -16,7 +16,7 @@ export default function SimpleSlider() {
           throw new Error("Failed to fetch cards");
         }
         const data = await response.json();
-        console.log(data); // データの確認
+        
         setCards(data); // APIから取得したデータを状態に保存
       } catch (error) {
         console.error(error);
@@ -45,7 +45,6 @@ export default function SimpleSlider() {
 
   // articlesが存在しない場合のエラーメッセージ
   if (!cards.articles || !Array.isArray(cards.articles)) {
-    console.error("articles配列がありません");
     return <div>記事がありません</div>; // 適切なフォールバックを表示
   }
 
