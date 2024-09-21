@@ -32,6 +32,8 @@ export default function SimpleSlider() {
     speed: 500,
     slidesToShow: 3, // デフォルトのスライド数
     slidesToScroll: 1,
+    centerMode: true, // センターモードを有効にする
+    centerPadding: "0px",
     responsive: [
       {
         breakpoint: 800, // 画面幅が800px以下の時の設定
@@ -50,15 +52,15 @@ export default function SimpleSlider() {
 
   return (
     <div className="p-4"> {/* Tailwindのパディングを追加 */}
-      <Slider {...settings} className="slider-container">
+      <Slider {...settings} className="slider-container ">
         {cards.articles.map((card) => (
-          <Card
-            key={card.id} // 適切な一意のキーを指定
-            title={card.title}
-            imageUrl={card.image}
-            url={card.url}
-          />
-          
+          <div key={card.id} className="px-2"> {/* カードに左右の隙間を追加 */}
+            <Card
+              title={card.title}
+              imageUrl={card.image}
+              url={card.url}
+            />
+            </div> 
         ))}
       </Slider>
     </div>

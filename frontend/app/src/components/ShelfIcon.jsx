@@ -1,11 +1,9 @@
-// app/components/ShelfIcon.jsx
-"use client"; // クライアントコンポーネントとしてマーク
-
+"use client"; 
 import { GiBookshelf } from "react-icons/gi";
 import { usePathname } from "next/navigation";
 
 export default function ShelfIcon() {
-  const pathname = usePathname(); // 現在のパスを取得
+  const pathname = usePathname(); 
 
   if (pathname === "/shelf") {
     return (

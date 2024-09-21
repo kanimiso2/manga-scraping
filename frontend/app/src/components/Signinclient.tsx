@@ -2,8 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth";
 import SignInButton from "./SignInButton";
 import ShelfIcon from "./ShelfIcon";
-import { GiBookshelf } from "react-icons/gi";
-import UserIcon from "./UserIcon"; // インポートパスが正しいか確認してください
+import UserIcon from "./UserIcon"; 
 import Link from "next/link";
 async function AppBar() {
   // セッション情報を取得する
@@ -16,7 +15,6 @@ async function AppBar() {
           <>
           <Link href="/shelf">
           <ShelfIcon />
-          {/* <GiBookshelf className="text-2xl text-gray-500 hover:text-black transition-colors duration-300 cursor-pointer" /> */}
         </Link>
           <UserIcon image={session.user.image} />
           </>

@@ -20,9 +20,9 @@ const CompanyIcon = ({ company, url }) => {
   }
 
   return (
-     <Link href={url} passHref>
+     <Link href={url} passHref className=' rounded-full hover:shadow-xl hover:scale-105 transition-transform duration-300'>
        <div 
-         className="relative rounded-full w-24 h-24 flex items-center justify-center text-lg font-bold text-white text-center leading-[6rem] overflow-hidden transition-shadow duration-300 hover:shadow-xl"
+         className="relative rounded-full w-24 h-24 flex items-center justify-center text-lg font-bold text-white text-center leading-[6rem] overflow-hidden transition-shadow duration-300 "
          style={iconStyle}
        >
          {iconText}
