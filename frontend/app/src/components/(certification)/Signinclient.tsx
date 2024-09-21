@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth";
+import { authOptions } from "../../../auth";
 import SignInButton from "./SignInButton";
-import ShelfIcon from "./ShelfIcon";
-import UserIcon from "./UserIcon"; 
+import ShelfIcon from "../ShelfIcon";
+import UserIcon from "../UserIcon"; 
 import Link from "next/link";
 async function AppBar() {
   // セッション情報を取得する
