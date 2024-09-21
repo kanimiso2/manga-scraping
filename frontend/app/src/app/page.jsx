@@ -2,6 +2,8 @@ import React from 'react';
 import Feed from "../components/Feed";
 import CompanyIcon from "../components/CompanyIcon";
 import Slick from "../components/slick"
+import { authOptions } from '../app/api/auth/[...nextauth]/route';
+import { getServerSession } from 'next-auth/next';
 
 const baseUrl = 'http://backend:3000/api/v1';
 
@@ -30,6 +32,13 @@ async function fetchdbFeeds(source, limit = 8) {
 
 
 export default async function Page() {
+  const session = await getServerSession(authOptions);
+  
+  if (session) {
+    console.log('JWT:', session); // JWTをコンソールに出力
+  } else {
+    console.log('No session found');
+  }
   const ZennTrendfeeds = await fetchFeeds('/feeds',8);
   const LineYahoofeeds = await fetchdbFeeds('LineYahoo');
   const Denafeeds = await fetchdbFeeds('Dena');

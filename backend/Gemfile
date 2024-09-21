@@ -46,6 +46,8 @@ gem 'feedjira'
 gem 'rack-cors', require: 'rack/cors'
 #pagenation
 gem 'kaminari'
+gem 'jwt'
+gem 'dotenv-rails'
 
 
 

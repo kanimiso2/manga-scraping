@@ -1,21 +1,44 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import Card from '../../../components/Card';
+import { getSession } from 'next-auth/react';
 
 export default function FeedList ({ params }: { params: { source: string } }) {
   const [articles, setArticles] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  // const fetchArticles = async (pageNumber) => {
+  //   try {
+  //     const response = await fetch(`http://localhost:3000/api/v1/pagenate?source=${params.source}&page=${pageNumber}`);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch');
+  //     }
+  //     const data = await response.json();
+  //     setArticles(data.articles);
+  //     setTotalPages(data.total_pages); // 総ページ数を取得
+  //   } catch (error) {
+  //     console.error('Error fetching articles:', error);
+  //   }
+  // };
+
+
   const fetchArticles = async (pageNumber) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/pagenate?source=${params.source}&page=${pageNumber}`);
+      // セッションからJWTを取得
+      const session = await getSession(); // NextAuthのgetSessionを使用
+     　const token = session?.jwt; // JWTをセッションから取得
+      const response = await fetch(`http://localhost:3000/api/v1/pagenate?source=${params.source}&page=${pageNumber}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch');
       }
       const data = await response.json();
       setArticles(data.articles);
-      setTotalPages(data.total_pages); // 総ページ数を取得
+      setTotalPages(data.total_pages);
     } catch (error) {
       console.error('Error fetching articles:', error);
     }
@@ -29,6 +52,7 @@ export default function FeedList ({ params }: { params: { source: string } }) {
   if (!articles || !Array.isArray(articles) || articles.length === 0) {
     return <div>記事がありません</div>; // 適切なフォールバックを表示
   }
+  
 
   return (
     <div className="container mx-auto p-4">

@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Card from "./Card";
 
 export default function SimpleSlider() {
-  const [cards, setCards] = useState([]);
+    const [cards, setCards] = useState([]);
 
   useEffect(() => {
     const fetchCards = async () => {
