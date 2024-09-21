@@ -1,4 +1,3 @@
-// app/shelf/page.jsx
 import { getServerSession } from "next-auth/next"; // サーバーサイドでセッションを取得
 import { authOptions } from "../../../auth"; // authOptionsを適切にインポート
 import { redirect } from "next/navigation";
