@@ -11,7 +11,6 @@ export default function Header() {
           <Link href="/" className="flex items-center">
             <span className="text-blue-400 italic">M</span>angaga
           </Link>
-            {/* <span className="text-blue-400 italic">M</span>angaga!! */}
             </li>
           <li>
             <Signin />    

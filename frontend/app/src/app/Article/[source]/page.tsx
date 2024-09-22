@@ -8,21 +8,6 @@ export default function FeedList ({ params }: { params: { source: string } }) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  // const fetchArticles = async (pageNumber) => {
-  //   try {
-  //     const response = await fetch(`http://localhost:3000/api/v1/pagenate?source=${params.source}&page=${pageNumber}`);
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch');
-  //     }
-  //     const data = await response.json();
-  //     setArticles(data.articles);
-  //     setTotalPages(data.total_pages); // 総ページ数を取得
-  //   } catch (error) {
-  //     console.error('Error fetching articles:', error);
-  //   }
-  // };
-
-
   const fetchArticles = async (pageNumber) => {
     try {
       // セッションからJWTを取得
@@ -58,14 +43,25 @@ export default function FeedList ({ params }: { params: { source: string } }) {
     <div className="container mx-auto p-4">
       <h1 className="text-4xl font-bold mb-6">{params.source}</h1>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {articles.map((article, index) => (
+        {/* {articles.map((article, index) => (
           <Card
             key={index}
             title={article.title}
             imageUrl={article.image}
             url={article.url}
           />
-        ))}
+        ))} */}
+        {articles.map((article) => {
+          console.log(article); // 各記事のIDを表示
+          return (
+            <Card
+              key={article.id}
+              title={article.title}
+              imageUrl={article.image}
+              url={article.url}
+            />
+          );
+        })}
       </div>
       <div className="flex justify-between mt-4">
         <button

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import StarIcon from './StarIcon'; // StarIconコンポーネントをインポート
 
-const Card = ({ title, imageUrl, url }) => {
+const Card = ({ title, imageUrl, url}) => {
   const [isStarred, setIsStarred] = useState(false);
 
   const handleStarClick = (e) => {

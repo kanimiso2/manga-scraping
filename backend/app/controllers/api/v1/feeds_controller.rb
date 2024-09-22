@@ -145,6 +145,7 @@ def pagenate
     if paginated_articles.any?
       response_data = paginated_articles.map do |article|
         {
+          id: article.id,
           title: article.title,
           url: article.url,
           image: article.image
