@@ -2,13 +2,9 @@ import React from 'react';
 import Card from '../../../../components/Card';
 import { getServerSession } from 'next-auth/next'; 
 import { authOptions } from '../../../api/auth/[...nextauth]/route'; 
-import { redirect } from 'next/navigation';
 
 export default async function FeedList({ params }: { params: { source: string, id: string } }) {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    redirect('/');
-  }
 
   const token = session?.jwt; // JWTをセッションから取得
   const page = parseInt(params.id) || 1; // URLのIDをページ番号として使用
@@ -45,6 +41,7 @@ export default async function FeedList({ params }: { params: { source: string, i
             url={article.url}
             articleId={article.id}
             isstar={article.isFavorite}
+            session={session}
           />
         ))}
       </div>

@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import StarIcon from './StarIcon'; 
 import { toast } from 'react-hot-toast';
 
-const Card = ({ title, imageUrl, url,articleId,isstar}) => {
+const Card = ({ title, imageUrl, url,articleId,isstar,session}) => {
   const [isStarred, setIsStarred] = useState(isstar);
-
   const handleStarClick = async (e) => {
+    e.stopPropagation();
+    if (!session) {
+      toast.error('ログインが必要です'); // セッションがない場合の通知
+      return; // クリックを無効にする
+    }
     try {
-      e.stopPropagation();
       setIsStarred(!isStarred);
       const method = isStarred ? 'DELETE' : 'POST';
       const response = await fetch(`/api/favorite/${articleId}`, {

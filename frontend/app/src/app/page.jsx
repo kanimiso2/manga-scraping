@@ -62,22 +62,25 @@ export default async function Page() {
         feeds={LineYahoofeeds}
         sectionTitle="Line Yahoo" // セクションタイトルを渡す
         moreLink = "http://localhost:8000/Article/LineYahoo/1"
+        session={session}
       />
       <Feed 
         feeds={Denafeeds}
         sectionTitle="Dena" // セクションタイトルを渡す
         moreLink = "http://localhost:8000/Article/Dena/1"
+        session={session}
       />
       <Feed 
         feeds={ikyufeeds}
         sectionTitle="一休.com" // セクションタイトルを渡す
         moreLink = "http://localhost:8000/Article/ikyu/1"
+        session={session}
       />
       <h1 className="text-center text-xl font-bold mt-10  mb-4">企業名から探す</h1>
       <div className="mt-8 flex justify-center space-x-6">
-        <CompanyIcon company="LineYahoo" url="http://localhost:8000/Article/LineYahoo"/>
-        <CompanyIcon company="Dena" url="http://localhost:8000/Article/Dena"/>
-        <CompanyIcon company="Ikyu" url="http://localhost:8000/Article/ikyu"/>
+        <CompanyIcon company="LineYahoo" url="http://localhost:8000/Article/LineYahoo/1"/>
+        <CompanyIcon company="Dena" url="http://localhost:8000/Article/Dena/1"/>
+        <CompanyIcon company="Ikyu" url="http://localhost:8000/Article/ikyu/1"/>
       </div>
     </div>
   );

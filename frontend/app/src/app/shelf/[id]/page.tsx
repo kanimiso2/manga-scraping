@@ -44,6 +44,7 @@ export default async function FeedList({ params }: { params: { id: string } }) {
             url={article.url}
             articleId={article.id}
             isstar={article.isFavorite}
+            session={session}
           />
         ))}
       </div>

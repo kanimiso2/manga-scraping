@@ -2,7 +2,7 @@ import React from 'react';
 import Card from './Card';
 import Link from 'next/link';
 
-export default function FeedComponent({ feeds ,sectionTitle,moreLink }) {
+export default function FeedComponent({ feeds ,sectionTitle,moreLink ,session}) {
   return (
     <div>
       <div className="flex justify-between items-center mb-6 mt-12">
@@ -23,6 +23,7 @@ export default function FeedComponent({ feeds ,sectionTitle,moreLink }) {
               url={feed.url} // 詳細ページへのURL
               articleId={feed.id}
               isstar={feed.isFavorite}
+              session={session}
             />
           );
         })}
