@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       get :pagenate, to: "feeds#pagenate" #pagenation
       resources :users, only: [:create]
       resources :favorite, only: [:create, :destroy]
+      resources :articles, only: [:index]
     end
   end
 

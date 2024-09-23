@@ -1,62 +1,7 @@
-# class ApplicationController < ActionController::API
-# end
-
-
-# class ApplicationController < ActionController::API
-#     before_action :authenticate_user
-  
-#     private
-  
-#     def authenticate_user
-#       token = request.headers['Authorization']&.split(' ')&.last
-#       return unless token
-  
-#       decoded_token = decode_jwt(token)
-#       if decoded_token
-#         @current_user = User.find_by(id: decoded_token['user_id'])
-#         Rails.logger.info("Current user: #{@current_user.inspect}")
-#       else
-#         Rails.logger.warn("Invalid token")
-#         render json: { status: 'error', message: 'Unauthorized' }, status: :unauthorized
-#       end
-#     end
-  
-#     # JWTをデコードするメソッド
-#     def decode_jwt(token)
-#       JWT.decode(token, Rails.application.secrets.secret_key_base, true, algorithm: 'HS256')[0]
-#     rescue JWT::DecodeError => e
-#       Rails.logger.error("JWT Decode Error: #{e.message}")
-#       nil
-#     end
-#   end
-  
-
-
 class ApplicationController < ActionController::API
     before_action :authenticate_user
   
     private
-  
-    # def authenticate_user
-    #   token = request.headers['Authorization']&.split(' ')&.last
-    #   if token
-    #     Rails.logger.info("Token: #{token}")
-    #   else
-    #     Rails.logger.warn("No token provided")
-    #   end
-      
-    #   return unless token
-  
-    #   decoded_token = decode_jwt(token)
-    #   if decoded_token
-    #     @current_user = User.find_by(id: decoded_token['user_id'])
-    #     Rails.logger.info("Current user: #{@current_user.inspect}")
-    #     Rails.logger.info("Decoded JWT: #{decoded_token.inspect}") # デコードされたトークンをログに出力
-    #   else
-    #     Rails.logger.warn("Invalid token")
-    #     render json: { status: 'error', message: 'Unauthorized' }, status: :unauthorized
-    #   end
-    # end
     def authenticate_user
         token = request.headers['Authorization']&.split(' ')&.last
       

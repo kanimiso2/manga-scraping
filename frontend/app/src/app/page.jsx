@@ -18,10 +18,15 @@ async function fetchFeeds(endpoint, limit) {
   return response.json();
 }
 
+async function fetchArticles(source, limit = 8) {
+  const session = await getServerSession(authOptions);
 
-async function fetchdbFeeds(source, limit = 8) {
-  const url = `http://backend:3000/api/v1/feedsdb?source=${source}&limit=${limit}`;
-  const response = await fetch(url);
+  const token = session?.jwt;
+  const response = await fetch(`http://backend:3000/api/v1/articles?source=${source}&limit=${limit}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch feeds');
@@ -40,13 +45,14 @@ export default async function Page() {
     console.log('No session found');
   }
   const ZennTrendfeeds = await fetchFeeds('/feeds',8);
-  const LineYahoofeeds = await fetchdbFeeds('LineYahoo');
-  const Denafeeds = await fetchdbFeeds('Dena');
-  const ikyufeeds = await fetchdbFeeds('ikyu');
+
+  const LineYahoofeeds = await fetchArticles('LineYahoo');
+  const Denafeeds = await fetchArticles('Dena');
+  const ikyufeeds = await fetchArticles('ikyu');
 
   return (
     <div className="container mx-auto p-8">
-      <Slick />
+      <Slick feeds={ZennTrendfeeds} />
       <Feed 
         feeds={ZennTrendfeeds}
         sectionTitle="Trend 🔥" // セクションタイトルを渡す
@@ -55,17 +61,17 @@ export default async function Page() {
       <Feed 
         feeds={LineYahoofeeds}
         sectionTitle="Line Yahoo" // セクションタイトルを渡す
-        moreLink = "http://localhost:8000/Article/LineYahoo"
+        moreLink = "http://localhost:8000/Article/LineYahoo/1"
       />
       <Feed 
         feeds={Denafeeds}
         sectionTitle="Dena" // セクションタイトルを渡す
-        moreLink = "http://localhost:8000/Article/Dena"
+        moreLink = "http://localhost:8000/Article/Dena/1"
       />
       <Feed 
         feeds={ikyufeeds}
         sectionTitle="一休.com" // セクションタイトルを渡す
-        moreLink = "http://localhost:8000/Article/ikyu"
+        moreLink = "http://localhost:8000/Article/ikyu/1"
       />
       <h1 className="text-center text-xl font-bold mt-10  mb-4">企業名から探す</h1>
       <div className="mt-8 flex justify-center space-x-6">

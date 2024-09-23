@@ -1,12 +1,3 @@
-# class User < ApplicationRecord
-#     has_secure_password
-#   has_many :accounts
-#   has_many :sessions
-#   validates :email, uniqueness: true
-# end
-
-
-
 class User < ApplicationRecord
     # パスワードのバリデーションを無効にする
     has_secure_password(validations: false)
@@ -17,6 +8,10 @@ class User < ApplicationRecord
     has_many :articles, through: :saved_articles
     validates :email, presence: true, uniqueness: true
     validates :name, presence: true
+
+
+    has_many :favorites
+    has_many :favorited_articles, through: :favorites, source: :article
     
   end
   

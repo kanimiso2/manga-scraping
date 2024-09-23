@@ -1,14 +1,32 @@
 "use client";
 import React, { useState } from 'react';
-import StarIcon from './StarIcon'; // StarIconコンポーネントをインポート
+import StarIcon from './StarIcon'; 
+import { toast } from 'react-hot-toast';
 
-const Card = ({ title, imageUrl, url}) => {
-  const [isStarred, setIsStarred] = useState(false);
+const Card = ({ title, imageUrl, url,articleId,isstar}) => {
+  const [isStarred, setIsStarred] = useState(isstar);
 
-  const handleStarClick = (e) => {
-    e.stopPropagation(); // クリックイベントのバブルを防ぐ
-    setIsStarred(!isStarred);
-    // ここで保存するURLに送信する処理を追加することもできます
+  const handleStarClick = async (e) => {
+    try {
+      e.stopPropagation();
+      setIsStarred(!isStarred);
+      const method = isStarred ? 'DELETE' : 'POST';
+      const response = await fetch(`/api/favorite/${articleId}`, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'お気に入りの更新に失敗しました');
+      }
+
+      console.log('response', data);
+      toast.success(isStarred ? 'お気に入りを外しました！' : 'お気に入りに追加しました！'); // 成功通知
+    } catch (error) {
+      console.error('エラーが発生しました:', error);
+    }
   };
 
   const handleClick = () => {

@@ -13,14 +13,19 @@ export default function FeedComponent({ feeds ,sectionTitle,moreLink }) {
       </div>
 
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {feeds.articles.map((feed) => (
-          <Card
-            key={feed.url} // URLがユニークなキーになる
-            title={feed.title}
-            imageUrl={feed.image} // 画像URLがあるかをチェック
-            url={feed.url} // 詳細ページへのURL
-          />
-        ))}
+        {feeds.articles.map((feed) => {
+          console.log(feed); // フィードの内容をログに出力
+          return (
+            <Card
+              key={feed.url} // URLがユニークなキーになる
+              title={feed.title}
+              imageUrl={feed.image} // 画像URLがあるかをチェック
+              url={feed.url} // 詳細ページへのURL
+              articleId={feed.id}
+              isstar={feed.isFavorite}
+            />
+          );
+        })}
       </div>
     </div>
   );

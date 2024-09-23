@@ -13,7 +13,7 @@ async function AppBar() {
       <div className="flex items-center gap-4"> 
         {session && session.user ? (
           <>
-          <Link href="/shelf">
+          <Link href="/shelf/1">
           <ShelfIcon />
         </Link>
           <UserIcon image={session.user.image} />
