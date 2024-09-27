@@ -1,0 +1,7 @@
+.git
+tmp
+log
+test
+spec
+.DS_Store
+.env 
