@@ -22,13 +22,23 @@ services:
       - 3000:3000
     volumes:
       - ./backend:/app
+  # frontend:
+  #   build:
+  #     context: ./frontend/
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./frontend/app:/usr/src/app
+  #   command: 'yarn dev'
+  #   ports:
+  #     - '8000:3000'
   frontend:
+    depends_on:
+      - backend 
     build:
       context: ./frontend/
       dockerfile: Dockerfile
     volumes:
-      - ./frontend/app:/usr/src/app
-    command: 'yarn dev'
+    - ./frontend/app:/usr/src/app
     ports:
       - '8000:3000'
 volumes:
